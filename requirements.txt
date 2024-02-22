@@ -1,0 +1,5 @@
+discord
+yt_dlp
+pytz
+pynacl
+python-dotenv
