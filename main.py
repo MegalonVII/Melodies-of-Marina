@@ -6,7 +6,6 @@ from sys import exit
 from pytz import timezone
 import os
 from dotenv import load_dotenv
-import nacl
 
 # token init
 load_dotenv()
