@@ -23,7 +23,7 @@ class Music(commands.Cog):
         for state in self.voice_states.values():
             self.bot.loop.create_task(state.stop())
 
-    async def respond(self, ctx: commands.Context, emoji: str, *, message: str):
+    async def respond(self, ctx: commands.Context, emoji: str, message: str):
         try:
             return await ctx.message.add_reaction(emoji)
         except:
@@ -55,7 +55,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False)
         await ctx.voice_state.stop()
         del self.voice_states[ctx.guild.id]
-        return await Music.respond(self=self, ctx=ctx, emoji='👋')
+        return await Music.respond(self=self, ctx=ctx, emoji='👋', message='Goodbye!')
 
     @commands.hybrid_command(name='now', description="Shows what's now playing!")
     async def _now(self, ctx: commands.Context):
@@ -162,10 +162,7 @@ class Music(commands.Cog):
         elif index < 0 or index == 0 or index > len(queue):
             return await ctx.reply('Uh oh! Index out of bounds...', mention_author=False, ephemeral=True)
         ctx.voice_state.songs.remove(index - 1)
-        try:
-            return await ctx.message.add_reaction('✅')
-        except:
-            return await ctx.reply('Song removed from queue! ✅', mention_author=False)
+        return await Music.respond(self=self, ctx=ctx, emoji='✅', message='Song removed from queue!')
 
     @commands.hybrid_command(name='play', description="Plays some tunes!")
     async def _play(self, ctx: commands.Context, *, search: str):
