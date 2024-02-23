@@ -1,5 +1,5 @@
 class VoiceError(Exception):
-  pass
+    pass
 
 class YTDLError(Exception):
-  pass
+    pass
