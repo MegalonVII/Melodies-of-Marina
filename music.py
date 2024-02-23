@@ -27,7 +27,7 @@ class Music(commands.Cog):
         try:
             return await ctx.message.add_reaction(emoji)
         except:
-            return await ctx.reply(f"{message} {emoji}" if message else f"{emoji}", mention_author=False)
+            return await ctx.reply(f"{message} {emoji}", mention_author=False)
 
     async def cog_check(self, ctx: commands.Context):
         if not ctx.guild:
