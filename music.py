@@ -42,7 +42,7 @@ class Music(commands.Cog):
         destination = ctx.author.voice.channel if ctx.author.voice else None 
         try:
             ctx.voice_state.voice = await destination.connect()
-            return await Music.respond(emoji='✅', message=f'Joined `{ctx.author.voice.channel.name}`!')
+            return await Music.respond(self=self, ctx=ctx, emoji='✅', message=f'Joined `{ctx.author.voice.channel.name}`!')
         except:
             return await ctx.reply('Uh oh! I couldn\'t connect to your voice channel. Maybe you\'re not in one or I\'m in a different one...', mention_author=False, ephemeral=True)
       
