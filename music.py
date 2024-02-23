@@ -55,10 +55,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False)
         await ctx.voice_state.stop()
         del self.voice_states[ctx.guild.id]
-        try:
-            return await ctx.message.add_reaction('👋')
-        except:
-            return await ctx.reply('👋', mention_author=False)
+        return await Music.respond(self=self, ctx=ctx, emoji='👋')
 
     @commands.hybrid_command(name='now', description="Shows what's now playing!")
     async def _now(self, ctx: commands.Context):
@@ -74,10 +71,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False, ephemeral=True)
         if ctx.voice_state.is_playing and ctx.voice_state.voice.is_playing():
             ctx.voice_state.voice.pause()
-            try:
-                return await ctx.message.add_reaction('⏸️')
-            except:
-                return await ctx.reply('Paused! ⏸️', mention_author=False)
+            return await Music.respond(self=self, ctx=ctx, emoji='⏸️', message='Paused!')
         else:
             return await ctx.reply('Uh oh! Nothing to pause...', mention_author=False, ephemeral=True)
 
@@ -88,10 +82,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False, ephemeral=True)
         if ctx.voice_state.is_playing and ctx.voice_state.voice.is_paused():
             ctx.voice_state.voice.resume()
-            try:
-                return await ctx.message.add_reaction('▶️')
-            except:
-                return await ctx.reply('Resumed! ▶️', mention_author=False)
+            return await Music.respond(self=self, ctx=ctx, emoji='▶️', message='Resumed!')
         else:
             return await ctx.reply('Uh oh! Nothing to resume...', mention_author=False, ephemeral=True)
 
@@ -103,10 +94,7 @@ class Music(commands.Cog):
         if ctx.voice_state.is_playing:
             ctx.voice_state.songs.clear()
             ctx.voice_state.voice.stop()
-            try:
-                return await ctx.message.add_reaction('⏹️')
-            except:
-                return await ctx.reply('Stopped! ⏹️', mention_author=False)
+            return await Music.respond(self=self, ctx=ctx, emoji='⏹️', message='Stopped!')
         else:
             return await ctx.reply('Uh oh! I\'m not playing any music right now...', mention_author=False, ephemeral=True)
 
@@ -121,10 +109,7 @@ class Music(commands.Cog):
             return await ctx.reply('Uh oh! I\'m not playing any music right now...', mention_author=False, ephemeral=True)
         if voter == ctx.voice_state.current.requester or djRole in voter.roles or voter.guild_permissions.administrator:
             ctx.voice_state.skip()
-            try:
-                return await ctx.message.add_reaction('⏭️')
-            except:
-                return await ctx.reply('Skipped! ⏭️', mention_author=False)
+            return await Music.respond(self=self, ctx=ctx, emoji='⏭️', message='Skipped!')
         else:
             return await ctx.reply('Uh oh! You didn\'t request this song to be played (DJs and adminstrators are unaffected)...', mention_author=False)
 
@@ -161,10 +146,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! Queue is empty...', mention_author=False)
             else:
                 ctx.voice_state.songs.shuffle()
-                try:
-                    return await ctx.message.add_reaction('🔀')
-                except:
-                    return await ctx.reply('Queue shuffled! 🔀')
+                return await Music.respond(self=self, ctx=ctx, emoji='🔀', message='Queue shuffled!')
         else:
             return await ctx.reply('Uh oh! You don\'t have the permissions to use this. Must be either a DJ or administrator...', mention_author=False)
 
