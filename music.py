@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import math
+import nacl
 from voicestate import VoiceState
 from song import Song
 from ytdlsource import YTDLSource
@@ -43,8 +44,7 @@ class Music(commands.Cog):
         try:
             ctx.voice_state.voice = await destination.connect()
             return await Music.respond(self, ctx, f'Joined `{ctx.author.voice.channel.name}`!', '✅')
-        except Exception as e:
-            print(e)
+        except:
             return await ctx.reply('Uh oh! I couldn\'t connect to your voice channel. Maybe you\'re not in one or I\'m in a different one...', mention_author=False, ephemeral=True)
       
     @commands.hybrid_command(name='leave', description="Leaves your voice call!")
