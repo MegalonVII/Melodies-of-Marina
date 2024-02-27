@@ -1,7 +1,7 @@
 from discord.ext import commands
 import asyncio
-from exts.songqueue import SongQueue
-from exts.errors import VoiceError
+from helpers.songqueue import SongQueue
+from helpers.errors import VoiceError
 
 class VoiceState:
     def __init__(self, bot: commands.Bot, ctx: commands.Context):

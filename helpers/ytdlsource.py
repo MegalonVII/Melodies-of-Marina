@@ -3,7 +3,7 @@ import yt_dlp as youtube_dl
 from discord.ext import commands
 import asyncio
 import functools
-from exts.errors import YTDLError
+from helpers.errors import YTDLError
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 

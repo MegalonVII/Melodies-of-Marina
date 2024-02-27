@@ -3,10 +3,10 @@ from discord.ext import commands
 from discord import app_commands
 import math
 import nacl
-from exts.voicestate import VoiceState
-from exts.song import Song
-from exts.ytdlsource import YTDLSource
-from exts.errors import YTDLError
+from helpers.voicestate import VoiceState
+from helpers.song import Song
+from helpers.ytdlsource import YTDLSource
+from helpers.errors import YTDLError
 
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot):

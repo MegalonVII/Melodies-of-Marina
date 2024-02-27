@@ -1,5 +1,5 @@
 import discord
-from exts.ytdlsource import YTDLSource
+from helpers.ytdlsource import YTDLSource
 
 class Song:
     __slots__ = ('source', 'requester')
