@@ -51,7 +51,7 @@ class VoiceState:
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
             try:
-                print(self.current.source.__type__)
+                print(self.current.source().__str__)
             except Exception as e:
                 print(e)
             print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
