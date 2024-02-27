@@ -16,6 +16,18 @@ class Tracker(commands.Cog):
     async def on_guild_join(self, guild):
         with open("serverlist.txt", "a") as file:
             file.write(f"{guild.name}, {guild.id}\n")
+            print(f"Joined `{guild.name}`! ({guild.id})")
+
+    @commands.Cog.listener()
+    async def on_guild_remove(self, guild):
+        with open("serverlist.txt", "r") as file:
+            lines = file.readlines()
+        filtered = [line for line in lines if f"{guild.name}, {guild.id}" not in line]
+
+        with open("serverlist.txt", "w") as file:
+            file.writelines(filtered)
+        
+        print(f"Left `{guild.name}`! ({guild.id})")
 
 async def setup(bot):
     await bot.add_cog(Tracker(bot))
