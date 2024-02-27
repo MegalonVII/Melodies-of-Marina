@@ -53,8 +53,9 @@ class VoiceState:
             self.voice.play(self.current.source, after=self.play_next_song)
             try: 
                 print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source.__str__()}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
-            except:
+            except Exception as e:
                 print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
+                print(f'Error: {e}')
             await self.current.source.channel.send(embed=self.current.create_embed())
             await self.next.wait()
 
