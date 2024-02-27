@@ -50,7 +50,11 @@ class VoiceState:
                 return
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
-            print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}`{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}`{Style.BRIGHT} in {Style.RESET_ALL}`{Fore.BLUE}{self.voice.channel.guild.name}{Fore.RESET}`\n')
+            try:
+                print(self.current.source.__type__)
+            except:
+                pass
+            print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name}{Fore.RESET}\n')
             await self.current.source.channel.send(embed=self.current.create_embed())
             await self.next.wait()
 
