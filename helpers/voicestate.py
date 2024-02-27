@@ -1,6 +1,6 @@
 from discord.ext import commands
 import asyncio
-from colorama import Fore, Style, Back
+from colorama import Fore, Style
 from helpers.songqueue import SongQueue
 from helpers.errors import VoiceError
 
@@ -50,7 +50,7 @@ class VoiceState:
                 return
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
-            print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Back.MAGENTA}{Fore.RED}{self.current.source.__str__()[2:-2]}{Back.RESET}{Fore.RESET} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}')
+            print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.RED}{self.current.source.__str__()[2:-2]}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}')
             await self.current.source.channel.send(embed=self.current.create_embed())
             await self.next.wait()
 
