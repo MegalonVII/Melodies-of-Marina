@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import math
+from colorama import Fore, Style
 import nacl
 from helpers.voicestate import VoiceState
 from helpers.song import Song
@@ -43,7 +44,7 @@ class Music(commands.Cog):
         destination = ctx.author.voice.channel if ctx.author.voice else None 
         try:
             ctx.voice_state.voice = await destination.connect()
-            print(f'Joined `{ctx.author.voice.channel.name}` in `{ctx.author.guild.name}`')
+            print(f'{Style.BRIGHT}Joined `{Fore.BLUE}{ctx.author.voice.channel.name}{Style.BRIGHT}{Style.RESET_ALL}` in `{Fore.BLUE}{ctx.author.guild.name}{Style.BRIGHT}{Style.RESET_ALL}`\n')
             return await Music.respond(self, ctx, f'Joined `{ctx.author.voice.channel.name}`!', '✅')
         except:
             return await ctx.reply('Uh oh! I couldn\'t connect to your voice channel. Maybe you\'re not in one or I\'m in a different one...', mention_author=False, ephemeral=True)
@@ -56,7 +57,7 @@ class Music(commands.Cog):
             if ctx.voice_client.channel != ctx.author.voice.channel or ctx.author.voice is None:
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False)
         await ctx.voice_state.stop()
-        print(f'Left `{ctx.author.voice.channel.name}` in `{ctx.author.guild.name}`')
+        print(f'Left `{ctx.author.voice.channel.name}` in `{ctx.author.guild.name}`\n')
         del self.voice_states[ctx.guild.id]
         return await Music.respond(self, ctx, 'Goodbye!', '👋')
 
