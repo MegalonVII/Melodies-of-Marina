@@ -22,24 +22,28 @@ def get_login_time(tz: str) -> str:
 # log in process
 @bot.event
 async def on_ready():
-    print("\nLoading music extension...")
+    print("\nLoading extensions...")
     try: # music ext set up
         await bot.load_extension('music')
-        print("Extension loaded! Setting presence...")
+        await bot.load_extension('servertracker')
+        print("Extensions loaded! Setting presence...")
     except:
         print("Unable to load. Terminating...")
         exit(0)
+
     try: # presence set up
-        await bot.change_presence(activity=discord.Game(name="your absolute jammers in chat! | /help"))
+        await bot.change_presence(activity=discord.Game(name='your jammers to a voice call near you! | /help'))
         print("Presence set! Syncing commands...")
     except:
         print("Unable to set presence. Terminating...")
         exit(0)
+
     try: # app tree set up
         print(f"Synced {len(await bot.tree.sync())} command(s)! Logging in...")
     except:
         print("Unable to sync. Terminating...")
         exit(0)
+
     return print(f'\nLogged in as: {bot.user.name}\nID: {bot.user.id}\n' + get_login_time('US/Eastern'))
 
 # help command
