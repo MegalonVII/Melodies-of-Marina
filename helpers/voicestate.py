@@ -1,6 +1,7 @@
 from discord.ext import commands
 import asyncio
 from colorama import Fore, Style
+from helpers.ytdlsource import YTDLSource
 from helpers.songqueue import SongQueue
 from helpers.errors import VoiceError
 
@@ -50,8 +51,8 @@ class VoiceState:
                 return
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
-            try: # try fixing this try catch here
-                print(self.current.source().__str__())
+            try: # try fixing this try catch statement
+                print(self.current.source.__str__(self))
             except Exception as e:
                 print(e)
             print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
