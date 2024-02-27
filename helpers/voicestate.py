@@ -1,7 +1,7 @@
 from discord.ext import commands
 import asyncio
 from colorama import Fore, Style
-from helpers.ytdlsource import YTDLSource
+# from helpers.ytdlsource import YTDLSource
 from helpers.songqueue import SongQueue
 from helpers.errors import VoiceError
 
@@ -52,9 +52,9 @@ class VoiceState:
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
             try: 
-                print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source.__str__()}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
+                print(f'{Style.BRIGHT}Playing {Fore.RED}{self.current.source.__str__()[2:-2]}{Fore.RESET} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
             except Exception as e:
-                print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
+                # print(f'{Style.BRIGHT}Playing {Fore.RED}{self.current.source.__str__()}{Fore.RESET} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
                 print(f'Error: {e}')
             await self.current.source.channel.send(embed=self.current.create_embed())
             await self.next.wait()
