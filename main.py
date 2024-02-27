@@ -7,6 +7,8 @@ from pytz import timezone
 import os
 from dotenv import load_dotenv
 
+extensions = ['music', 'servertracker']
+
 # token init
 load_dotenv()
 token = os.getenv('TOKEN')
@@ -23,9 +25,9 @@ def get_login_time(tz: str) -> str:
 @bot.event
 async def on_ready():
     print("\nLoading extensions...")
-    try: # music ext set up
-        await bot.load_extension('music')
-        await bot.load_extension('servertracker')
+    try: # ext set up
+        for extension in extensions:
+            await bot.load_extension(f'exts.{extension}')
         print("Extensions loaded! Setting presence...")
     except:
         print("Unable to load. Terminating...")
