@@ -51,11 +51,10 @@ class VoiceState:
                 return
             self.current.source.volume = self._volume
             self.voice.play(self.current.source, after=self.play_next_song)
-            try: # try fixing this try catch statement
-                print(self.current.source.__str__(self))
-            except Exception as e:
-                print(e)
-            print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
+            try: 
+                print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source.__str__()}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
+            except:
+                print(f'{Style.BRIGHT}Playing {Style.RESET_ALL}{Fore.BLUE}{self.current.source}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.BLUE}{self.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{self.voice.channel.guild.name} ({self.voice.channel.guild.id}){Fore.RESET}\n')
             await self.current.source.channel.send(embed=self.current.create_embed())
             await self.next.wait()
 
