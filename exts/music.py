@@ -8,6 +8,7 @@ from helpers.voicestate import VoiceState
 from helpers.song import Song
 from helpers.ytdlsource import YTDLSource
 from helpers.errors import YTDLError
+from helpers.functions import parse_total_duration
 
 class Music(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -131,10 +132,12 @@ class Music(commands.Cog):
         start = (page - 1) * items_per_page
         end = start + items_per_page
         queue = ''
+        total_duration = []
         for i, song in enumerate(ctx.voice_state.songs[start:end], start=start):
             queue += f'`{i+1}.` **{song.source.title}** (*{song.source.duration}*)\n'
+            total_duration.append(song.source.duration) 
         embed = (discord.Embed(color=discord.Color.green(),description=f'**{len(ctx.voice_state.songs)} tracks:**\n\n{queue}')
-                .set_footer(text=f'Viewing page {page}/{pages}'))
+                .set_footer(text=f'Viewing page {page}/{pages}\nTotal Queue Duration: {parse_total_duration(total_duration)}'))
         return await ctx.reply(embed=embed, mention_author=False)
 
     @commands.hybrid_command(name='shuffle', description="Shuffles the queue!")

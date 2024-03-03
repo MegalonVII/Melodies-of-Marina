@@ -98,5 +98,5 @@ class YTDLSource(discord.PCMVolumeTransformer):
         if minutes > 0:
             duration.append('1 minute' if minutes == 1 else f'{minutes} minutes')
         if seconds > 0:
-            duration.append('1 seconds' if seconds == 1 else f'{seconds} seconds')
+            duration.append('1 second' if seconds == 1 else f'{seconds} seconds')
         return ', '.join(duration)
