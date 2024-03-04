@@ -122,7 +122,6 @@ class Music(commands.Cog):
             return await ctx.reply('Uh oh! You didn\'t request this song to be played (DJs and adminstrators are unaffected)...', mention_author=False)
 
     @commands.hybrid_command(name='queue', description="Shows the queue! Enter a number as well to see which page in the queue!")
-    @app_commands.describe(page="Queue page")
     async def _queue(self, ctx: commands.Context, *, page: int = 1):
         if page < 1:
             return await ctx.reply('Uh oh! Invalid page number. Must be greater than or equal to `1`...', mention_author=False, ephemeral=True)
@@ -147,7 +146,8 @@ class Music(commands.Cog):
             if page < pages:
                 buttons.append(Button(style=ButtonStyle.grey, label='Next', custom_id=f'queue_page_{page+1}'))
 
-        return await ctx.reply(embed=embed, components=buttons, mention_author=False)
+        message = await ctx.reply(embed=embed, components=buttons, mention_author=False)
+        return await message.edit(components=buttons)
 
     @commands.hybrid_command(name='shuffle', description="Shuffles the queue!")
     async def _shuffle(self, ctx: commands.Context):
