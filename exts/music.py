@@ -15,17 +15,6 @@ class Music(commands.Cog):
         self.bot = bot
         self.voice_states = {}
 
-    def get_voice_state(self, ctx: commands.Context):
-        state = self.voice_states.get(ctx.guild.id)
-        if not state:
-            state = VoiceState(self.bot, ctx)
-            self.voice_states[ctx.guild.id] = state
-        return state
-
-    def cog_unload(self):
-        for state in self.voice_states.values():
-            self.bot.loop.create_task(state.stop())
-
     async def respond(self, ctx: commands.Context, message: str, emoji: str):
         try:
             return await ctx.message.add_reaction(emoji)
@@ -38,7 +27,12 @@ class Music(commands.Cog):
         return True
 
     async def cog_before_invoke(self, ctx: commands.Context):
-        ctx.voice_state = self.get_voice_state(ctx)
+        checker = self.voice_states.get(ctx.guild.id)
+        if not checker:
+            self.voice_states[ctx.guild.id] = VoiceState(self.bot, ctx)
+            ctx.voice_state = self.voice_states[ctx.guild.id]
+
+
 
     @commands.hybrid_command(name='join', description="Joins your voice call!")
     async def _join(self, ctx: commands.Context):
@@ -180,7 +174,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! I\'m already in a voice channel...', mention_author=False, ephemeral=True)
         async with ctx.typing():
             try:
-                source = await YTDLSource.create_source(ctx, search, loop=self.bot.loop)
+                source = await YTDLSource.create_source(ctx, search)
             except YTDLError as e:
                 return await ctx.reply(f'Uh oh! An error occurred while processing this request... ({str(e)})', mention_author=False, ephemeral=True)
             else:
