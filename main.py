@@ -51,7 +51,7 @@ async def on_ready():
 # help command
 @bot.hybrid_command(name="help", description="Get help pertaining to all commands!")
 async def help(ctx):
-    e = discord.Embed(color=discord.Color.green())
+    e = discord.Embed(color=discord.Color.red())
     e.set_author(name='Commands Available')
 
     e.add_field(name='/join', value='Joins the voice chat that you are in', inline=False)
