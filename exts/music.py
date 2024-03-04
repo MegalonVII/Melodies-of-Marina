@@ -31,7 +31,7 @@ class Music(commands.Cog):
         if not checker:
             self.voice_states[ctx.guild.id] = VoiceState(self.bot, ctx)
             ctx.voice_state = self.voice_states[ctx.guild.id]
-
+        return ctx.voice_state
 
 
     @commands.hybrid_command(name='join', description="Joins your voice call!")
