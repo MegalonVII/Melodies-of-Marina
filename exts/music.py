@@ -127,7 +127,7 @@ class Music(commands.Cog):
             return await ctx.reply('Uh oh! Invalid page number. Must be greater than or equal to `1`...', mention_author=False, ephemeral=True)
         if len(ctx.voice_state.songs) == 0:
             return await ctx.reply('Uh oh! Queue is empty...', mention_author=False, ephemeral=True)
-        items_per_page = 25
+        items_per_page = 10
         pages = math.ceil(len(ctx.voice_state.songs) / items_per_page)
         if page > pages:
             return await ctx.reply(f'Uh oh! Invalid page number. Must be less than or equal to `{pages}`...', mention_author=False, ephemeral=True)
