@@ -15,32 +15,40 @@ class Music(commands.Cog):
         self.bot = bot
         self.voice_states = {}
 
+    # frontend helpers
+    # these functions make the bot act according to certain contexts, such as being used in dms or being used as an interaction
     async def respond(self, ctx: commands.Context, message: str, emoji: str):
         try:
             return await ctx.message.add_reaction(emoji)
         except:
             return await ctx.reply(f"{message} {emoji}", mention_author=False)
 
-    async def cog_check(self, ctx: commands.Context):
+    async def cog_check(self, ctx: commands.Context) -> bool:
         if not ctx.guild:
-            return await ctx.send('hey jackass, don\'t think you can be cheeky by trying to use me in dms. go back to the server, punk.')
+            return False
         return True
+    
+    # backend helpers
+    # this is to initiate the voice call that the bot will be in
+    def get_voice_state(self, ctx: commands.Context):
+        state = self.voice_states.get(ctx.guild.id)
+        if not state:
+            state = VoiceState(self.bot, ctx)
+            self.voice_states[ctx.guild.id] = state
+        return state
 
     async def cog_before_invoke(self, ctx: commands.Context):
-        checker = self.voice_states.get(ctx.guild.id)
-        if not checker:
-            self.voice_states[ctx.guild.id] = VoiceState(self.bot, ctx)
-            ctx.voice_state = self.voice_states[ctx.guild.id]
-        return ctx.voice_state
+        ctx.voice_state = self.get_voice_state(ctx)
 
-
+    # commands that are usable
+    # join, leave, now, pause, resume, stop, skip, queue, shuffle, remove, play
     @commands.hybrid_command(name='join', description="Joins your voice call!")
     async def _join(self, ctx: commands.Context):
         destination = ctx.author.voice.channel if ctx.author.voice else None 
         try:
             ctx.voice_state.voice = await destination.connect()
             print(f'{Style.BRIGHT}Joined {Style.RESET_ALL}{Fore.BLUE}{ctx.author.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{ctx.author.guild.name} ({ctx.author.guild.id}){Fore.RESET}')
-            return await Music.respond(self, ctx, f'Joined `{ctx.author.voice.channel.name}`!', '✅')
+            return await self.respond(self, ctx, f'Joined `{ctx.author.voice.channel.name}`!', '✅')
         except:
             return await ctx.reply('Uh oh! I couldn\'t connect to your voice channel. Maybe you\'re not in one or I\'m in a different one...', mention_author=False, ephemeral=True)
       
@@ -54,7 +62,7 @@ class Music(commands.Cog):
         await ctx.voice_state.stop()
         print(f'{Style.BRIGHT}Left {Style.RESET_ALL}{Fore.BLUE}{ctx.author.voice.channel.name}{Fore.RESET}{Style.BRIGHT} in {Style.RESET_ALL}{Fore.GREEN}{ctx.author.guild.name} ({ctx.author.guild.id}){Fore.RESET}')
         del self.voice_states[ctx.guild.id]
-        return await Music.respond(self, ctx, 'Goodbye!', '👋')
+        return await self.respond(self, ctx, 'Goodbye!', '👋')
 
     @commands.hybrid_command(name='now', description="Shows what's now playing!")
     async def _now(self, ctx: commands.Context):
@@ -70,7 +78,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False, ephemeral=True)
         if ctx.voice_state.is_playing and ctx.voice_state.voice.is_playing():
             ctx.voice_state.voice.pause()
-            return await Music.respond(self, ctx, 'Paused!', '⏸️')
+            return await self.respond(self, ctx, 'Paused!', '⏸️')
         else:
             return await ctx.reply('Uh oh! Nothing to pause...', mention_author=False, ephemeral=True)
 
@@ -81,7 +89,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! You\'re not in my voice channel...', mention_author=False, ephemeral=True)
         if ctx.voice_state.is_playing and ctx.voice_state.voice.is_paused():
             ctx.voice_state.voice.resume()
-            return await Music.respond(self, ctx, 'Resumed!', '▶️')
+            return await self.respond(self, ctx, 'Resumed!', '▶️')
         else:
             return await ctx.reply('Uh oh! Nothing to resume...', mention_author=False, ephemeral=True)
 
@@ -93,7 +101,7 @@ class Music(commands.Cog):
         if ctx.voice_state.is_playing:
             ctx.voice_state.songs.clear()
             ctx.voice_state.voice.stop()
-            return await Music.respond(self, ctx, 'Stopped!', '⏹️')
+            return await self.respond(self, ctx, 'Stopped!', '⏹️')
         else:
             return await ctx.reply('Uh oh! I\'m not playing any music right now...', mention_author=False, ephemeral=True)
 
@@ -108,7 +116,7 @@ class Music(commands.Cog):
             return await ctx.reply('Uh oh! I\'m not playing any music right now...', mention_author=False, ephemeral=True)
         if voter == ctx.voice_state.current.requester or djRole in voter.roles or voter.guild_permissions.administrator:
             ctx.voice_state.skip()
-            return await Music.respond(self, ctx, 'Skipped!', '⏭️')
+            return await self.respond(self, ctx, 'Skipped!', '⏭️')
         else:
             return await ctx.reply('Uh oh! You didn\'t request this song to be played (DJs and adminstrators are unaffected)...', mention_author=False)
 
@@ -147,7 +155,7 @@ class Music(commands.Cog):
                 return await ctx.reply('Uh oh! Queue is empty...', mention_author=False)
             else:
                 ctx.voice_state.songs.shuffle()
-                return await Music.respond(self, ctx, 'Queue shuffled!', '🔀')
+                return await self.respond(self, ctx, 'Queue shuffled!', '🔀')
         else:
             return await ctx.reply('Uh oh! You don\'t have the permissions to use this. Must be either a DJ or administrator...', mention_author=False)
 
@@ -163,7 +171,7 @@ class Music(commands.Cog):
         elif index < 0 or index == 0 or index > len(queue):
             return await ctx.reply('Uh oh! Index out of bounds...', mention_author=False, ephemeral=True)
         ctx.voice_state.songs.remove(index - 1)
-        return await Music.respond(self, ctx, 'Song removed from queue!', '✅')
+        return await self.respond(self, ctx, 'Song removed from queue!', '✅')
 
     @commands.hybrid_command(name='play', description="Plays some tunes!")
     async def _play(self, ctx: commands.Context, *, search: str):
