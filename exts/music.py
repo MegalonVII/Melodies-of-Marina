@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord.components import Button, ButtonStyle
 from discord import app_commands
 import math
 from colorama import Fore, Style
@@ -122,6 +121,7 @@ class Music(commands.Cog):
             return await ctx.reply('Uh oh! You didn\'t request this song to be played (DJs and adminstrators are unaffected)...', mention_author=False)
 
     @commands.hybrid_command(name='queue', description="Shows the queue! Enter a number as well to see which page in the queue!")
+    @app_commands.describe(page="Queue page")
     async def _queue(self, ctx: commands.Context, *, page: int = 1):
         if page < 1:
             return await ctx.reply('Uh oh! Invalid page number. Must be greater than or equal to `1`...', mention_author=False, ephemeral=True)
@@ -139,15 +139,8 @@ class Music(commands.Cog):
             queue += f'`{i+1}.` **{song.source.title}** (*{song.source.duration}*){'\n' if i != end else ''}'
         embed = (discord.Embed(color=discord.Color.green(), title=f'**{len(ctx.voice_state.songs)} songs:**', description=queue)
                 .set_footer(text=f'Viewing page {page}/{pages}\nTotal Queue Duration: {parse_total_duration([song.source.duration for song in ctx.voice_state.songs])}'))
-        buttons = []
-        if pages > 1:
-            if page > 1:
-                buttons.append(Button(style=ButtonStyle.grey, label='Previous', custom_id=f'queue_page_{page-1}'))
-            if page < pages:
-                buttons.append(Button(style=ButtonStyle.grey, label='Next', custom_id=f'queue_page_{page+1}'))
 
-        message = await ctx.reply(embed=embed, components=buttons, mention_author=False)
-        return await message.edit(components=buttons)
+        return await ctx.reply(embed=embed, mention_author=False)
 
     @commands.hybrid_command(name='shuffle', description="Shuffles the queue!")
     async def _shuffle(self, ctx: commands.Context):
@@ -196,15 +189,6 @@ class Music(commands.Cog):
                 song = Song(source)
                 await ctx.voice_state.songs.put(song)
                 return await ctx.reply(f'Queued {str(source)}', mention_author=False)
-            
-    # button interaction for queue
-    @commands.Cog.listener()
-    async def on_button_click(self, interaction):
-        if interaction.custom_id.startswith('queue_page_'):
-            page = int(interaction.custom_id.split('_')[-1])
-            await interaction.respond(content=f"Switching to page {page}", type=7)
-            await self._queue(interaction.message, page=page)
-
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
