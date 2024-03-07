@@ -137,7 +137,7 @@ class Music(commands.Cog):
         queue = ''
         for i, song in enumerate(ctx.voice_state.songs[start:end], start=start):
             queue += f'`{i+1}.` **{song.source.title}** (*{song.source.duration}*){'\n' if i != end else ''}'
-        embed = (discord.Embed(color=discord.Color.blue(), title=f'**{len(ctx.voice_state.songs)} songs:**', description=queue)
+        embed = (discord.Embed(color=discord.Color.blue(), title=f'**__{len(ctx.voice_state.songs)} Song{'s' if len(ctx.voice_state.songs > 1) else ''}__**', description=queue)
                 .set_footer(text=f'Viewing page {page}/{pages}\nQueue length: {parse_total_duration([song.source.duration for song in ctx.voice_state.songs])}'))
         return await ctx.reply(embed=embed, mention_author=False)
 
@@ -179,6 +179,7 @@ class Music(commands.Cog):
         if ctx.voice_client:
             if ctx.voice_client.channel != ctx.author.voice.channel:
                 return await ctx.reply('Uh oh! I\'m already in a voice channel...', mention_author=False, ephemeral=True)
+            
         async with ctx.typing():
             try:
                 source = await YTDLSource.create_source(ctx, search)
