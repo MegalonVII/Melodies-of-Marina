@@ -137,7 +137,7 @@ class Music(commands.Cog):
         queue = ''
         for i, song in enumerate(ctx.voice_state.songs[start:end], start=start):
             queue += f'`{i+1}.` **{song.source.title}** (*{song.source.duration}*){'\n' if i != end else ''}'
-        embed = (discord.Embed(color=discord.Color.blue(), title=f'**__{len(ctx.voice_state.songs)} Song{'s' if len(ctx.voice_state.songs > 1) else ''}__**', description=queue)
+        embed = (discord.Embed(color=discord.Color.blue(), title=f'**__{len(ctx.voice_state.songs)} Track{'s' if len(ctx.voice_state.songs) > 1 else ''}__**', description=queue)
                 .set_footer(text=f'Viewing page {page}/{pages}\nQueue length: {parse_total_duration([song.source.duration for song in ctx.voice_state.songs])}'))
         return await ctx.reply(embed=embed, mention_author=False)
 
