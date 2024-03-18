@@ -58,7 +58,7 @@ async def help(ctx):
     e.add_field(name='/leave', value='Leaves the voice chat that I am in', inline=False)
     e.add_field(name='/play (YouTube URL or search query)', value= 'While I\'m in voice call, I will play the song from the YouTube URL or search query you provide me.', inline=False)
     e.add_field(name='/now', value='Displays the current song that I\'m playing', inline=False)
-    e.add_field(name='/queue (optional: page number)', value='Displays the queue of songs. Page value defaults to 1. Each page displays the first 25 songs in the queue', inline=False)
+    e.add_field(name='/queue (optional: page number)', value='Displays the queue of songs. Page value defaults to 1. Each page displays the first 10 songs in the queue', inline=False)
     e.add_field(name='/shuffle', value='Shuffles the current queue. *[DJs/Admin Only]*', inline=False)
     e.add_field(name='/remove (index)', value='Removes the song at the provided index from the queue', inline=False)
     e.add_field(name='/pause', value='Pauses any music that I\'m playing', inline=False)
