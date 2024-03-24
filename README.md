@@ -1,5 +1,5 @@
 # Melodies of Marina
-Proprietary Discord bot for the server called "The Marina" written in Discord.py. While the code may be open-source, **it is NOT intended for distribution or reproduction!** The open-source nature is for people in the server to see the inner workings of the bot and join in on the coding if they so choose. 
+Discord bot written in Discord.py and primarily using yt_dlp. While the code may be open-source, **it is NOT intended for distribution or reproduction!** The open-source nature is for people to see the inner workings of the bot and join in on the coding if they so choose. 
 
 # Commands
 This is also viewable from the `main.py` file in this repo, and also in our Discord server via `/help`.
