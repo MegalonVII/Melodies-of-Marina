@@ -70,7 +70,7 @@ async def help(ctx):
     return await ctx.reply(embed=e, mention_author=False, ephemeral=True)
 
 # website hidden command
-@bot.hybrid_command(name="website")
+@bot.hybrid_command(name="website", description="The link to my website")
 async def website(ctx):
     return await ctx.reply("https://melodies-of-marina.weebly.com/", mention_author=False, ephemeral=True)
 
