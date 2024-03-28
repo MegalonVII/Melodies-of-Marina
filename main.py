@@ -34,7 +34,7 @@ async def on_ready():
         exit(0)
 
     try: # presence set up
-        await bot.change_presence(activity=discord.Game(name='your jammers to a voice call near you! | /help'))
+        await bot.change_presence(activity=discord.Game(name='your jammers to a voice call near you!'))
         print("Presence set! Syncing commands...")
     except:
         print("Unable to set presence. Terminating...")
